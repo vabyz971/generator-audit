@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="shortcut icon"type="image/png"href="{% static '/image/fvicon.png' %}"/>
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- ==== CSS ==== -->
+    {% block static_css %}
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}"/>
+    {% endblock static_css %}
+
+    <title>{% block title %} {{title}}  {% endblock title %}</title>
+  </head>
+  <body id="body-pd">
+
+    {% block navbar %} {% include 'components/navbar.html' %} {% endblock navbar %}
+    {% block content %}{% endblock content %}
+    {% block footer %}{% endblock footer %}
+
+    <!-- ==== JAVASCRIPT ==== -->
+    {% block static_js %}
+    <script src="{% static '/js/javascript.js' %}"></script>
+    {% endblock static_js %}
+
+  </body>
+</html>
