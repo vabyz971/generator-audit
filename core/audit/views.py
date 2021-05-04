@@ -2,8 +2,6 @@
 from django.views.generic import TemplateView, DetailView, DeleteView
 from django.views.generic.base import RedirectView
 from .forms import AddNewUserForm
-# Create your views here.
-
 
 
 class HomeView(TemplateView):
@@ -45,6 +43,14 @@ class RegisterUserView(TemplateView):
 
 class AddAuditView(TemplateView):
     """ Page Add audit """
+    template_name = 'audit/addAudit.html'
+    title = 'Ajouter un audit'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = self.title
+        return context
+
     pass
 
 class DetailAuditView(DetailView):
