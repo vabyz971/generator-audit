@@ -1,0 +1,35 @@
+{% extends "base_site.html" %} 
+
+{% block title %} {{audit.name}} {% endblock title %}
+
+{% block content %}
+
+
+<table>
+    <thead>
+        <th>
+           Name 
+        </th>
+        <th>
+            Autheur
+        </th>
+        <th>
+            Relecteur
+        </th>
+        <th>
+            Dernière modification
+        </th>
+    </thead>
+        {% for audit in audits %}
+    <tbody>
+        <td>{{audit.name}}</td>
+        <td>{{audit.author}}</td>
+        <td>{{audit.readers}}</td>        
+        <td>{{audit.update_by}}</td>      
+        <td><a href="{{audit.get_absolute_url}} ">Voir plus</a></td>      
+    </tbody>
+        {% endfor %}
+</table>
+
+
+{% endblock content %}

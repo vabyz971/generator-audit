@@ -28,11 +28,11 @@
         <span class="nav__logo-name">Dashboard</span>
       </a>
       <div class="nav__list">
-        <a href="" class="nav__link">
+        <a href="{% url 'audit:list-audit' %}" class="nav__link">
           <i class="bx bx-grid-alt nav__icon"></i>
           <span class="nav__name">Vos audit</span>
         </a>
-        <a href="{% url 'audit:add_audit' %}" class="nav__link">
+        <a href="{% url 'audit:add-audit' %}" class="nav__link">
           <i class="bx bx-plus nav__icon"></i>
           <span class="nav__name">Ajouter un audit</span>
         </a>

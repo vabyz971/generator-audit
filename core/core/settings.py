@@ -128,6 +128,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'data')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -136,7 +139,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # REDIRECTION URL AUTHENTIFICATION
 
-LOGIN_REDIRECT_URL = 'audit:home'
 LOGIN_URL = "audit:login"
 
+LOGIN_REDIRECT_URL = 'audit:home'
 LOGOUT_REDIRECT_URL = 'audit:login'
+
