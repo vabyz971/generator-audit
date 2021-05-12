@@ -7,16 +7,14 @@ from .models import Audit, Exploit
 class AddNewUserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username','email', 'password1','password2']
+        fields = ['username', 'email', 'password1', 'password2']
 
 
 class AuditForm(forms.ModelForm):
     class Meta:
         model = Audit
-        fields = '__all__'
-        widgets = {
-            'author' : forms.HiddenInput,
-        }
+        fields = ('name', 'readers')
+
 
 class ExploitForm(forms.ModelForm):
     class Meta():

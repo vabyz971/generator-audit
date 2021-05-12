@@ -1,4 +1,5 @@
 
+from django.forms.models import modelformset_factory
 from django.views.generic import TemplateView,ListView, DetailView, CreateView
 from django.views.generic.base import RedirectView
 from django.contrib.auth.models import User
@@ -45,37 +46,31 @@ class RegisterUserView(TemplateView):
 
 
 class AddAuditView(CreateView):
-    """ Page Add audit """
     model = Audit
     template_name = 'audit/addAudit.html'
     success_url = '/add-audit/'
     form_class = AuditForm
 
-    # ExploitFormSet = modelformset_factory(Exploit, form=ExploitForm, extra=5)
-    # exploit_form_set_class = ExploitFormSet()
+    ExploitFormSet = modelformset_factory(Exploit, form=ExploitForm, extra=3)
+    exploit_form_set_class = ExploitFormSet()
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
-    def post(self, request):
-        if request.method == 'POST':
-            audit = AuditForm(request.POST)
-            print(audit.data)
-            if audit.is_valid():
-                audit.save()
-                reverse_lazy('add-audit')
-                
-                # audit.save(commit=False)
-                # exploits = self.ExploitFormSet(request.POST, initial={'audit': self.audit})
-                # for exploit in exploits:
-                #     if exploit.is_valid():
-                #         exploit.save
-
-
+    def post(self,request):
+        if self.form_valid:
+            exploits = self.ExploitFormSet(request.POST)
+            for exploit in exploits:
+                exploit.instance.audit = self.model
+                if exploit.is_valid():
+                    exploit.save()
 
 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['exploit_form_set'] = self.exploit_form_set_class
+        context['exploit_form_set'] = self.exploit_form_set_class
         return context
 
 class AuditListView(ListView):
