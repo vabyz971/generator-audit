@@ -1,34 +1,41 @@
-{% extends "base_site.html" %} 
-
-{% block navbar %} {% endblock %}
-{% block content %}
+{% extends "base_site.html" %} {% block navbar %} {% endblock %} {% block content %}
 
 
-<div class="center">
-    <h1 class="title_form">Connexion</h1>
+<div class="row d-flex align-items-center justify-content-center">
 
-    <form action="" method="post">
-        {% csrf_token %}
-
-        <div class="field_text">
-            <label>Pseudo</label>
-            <input type="text" name="username">
+    <div class="col col-md-5">
+        <div class="d-flex align-items-center justify-content-center m-3 mb-5">
+            <div class="border-0 rounded-circle shadow-lg p-3 bg-body">
+                <i class='bx bxs-user' style="font-size:5rem"></i>
+            </div>
         </div>
-
-        <div class="field_text">
-            <label>Mot de passe</label>
-            <input type="password" name="password">
+      <form method="post">
+        {% csrf_token %} {{form.errors}}
+        <div class="mb-3 d-flex align-items-center">
+          <input
+            name="username"
+            type="text"
+            class="form-control"
+            id="exampleInputEmail1"
+            aria-describedby="emailHelp"
+            placeholder="Nom d'utilisateur"
+          />
         </div>
-
-        <div class="field_pass">
-            <a href="{% url 'audit:register' %}">Incription</a>
+        <div class="mb-3">
+          <input
+            name="password"
+            type="password"
+            class="form-control"
+            id="exampleInputPassword1"
+            placeholder="Mot de passe"
+          />
         </div>
-        <input class="btn btn-primary" type="submit" name="Connexion">
-        
-    </form>
-    {{form.errors}}
-</div>
-
-
+        <div class="">
+          <button type="submit" class="btn btn-success btn-lg">Connexion</button>
+          <a href="{% url 'audit:register'%}">Incription</a>
+        </div>
+      </form>
+    </div>
+  </div>
 
 {% endblock content %}

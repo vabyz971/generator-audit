@@ -1,0 +1,43 @@
+{% load static %}
+
+<div class="position-absolute top-0 start-0  d-flex flex-column p-3 text-white bg-dark" style="width: 280px; height:100%;">
+    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+      <span class="fs-4">Générator Audit</span>
+    </a>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li>
+        <a href="{% url 'audit:home' %}" class="nav-link text-white d-flex align-items-center {% if server %} active {% endif %} ">
+          <i class="bx bx-grid-alt p-1 fs-3"></i>
+          Dashboard
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'audit:add-audit' %}" class="nav-link text-white d-flex align-items-center {% if server %} active {% endif %} ">
+          <i class='bx bx-bookmark-alt-plus p-1 fs-3'></i>
+          Nouvelle Audit
+        </a>
+      </li>
+
+    </ul>
+    <hr>
+    {% if user.is_authenticated %}
+      <div class="dropdown">
+        <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+          <img src="https://github.com/mdo.png" alt="" class="rounded-circle me-2" width="32" height="32">
+          <strong> {{ user.username }} </strong>
+        </a>
+        
+        <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="{% url 'audit:logout' %}">Déconnexion</a></li>
+        </ul>
+      </div>
+    {% else %}
+      <a href="{% url 'audit:login'%}" class="btn btn-primary text-white fs-5 text-decoration-none">
+        <strong> Connexion </strong>
+      </a>
+    {% endif %}
+  </div>

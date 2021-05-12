@@ -11,19 +11,26 @@
     <!-- ==== CSS ==== -->
     {% block static_css %}
     <link rel="stylesheet" href="{% static '/vendor/bootstrap/css/bootstrap.css' %}"/>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}"/>
     {% endblock static_css %}
 
     <title>Générateur d'audit</title>
   </head>
-  <body id="body-pd">
+  <body>
 
-    {% block navbar %} {% include 'components/navbar.html' %} {% endblock navbar %}
-    {% block content %}{% endblock content %}
+    {% block sidebar %} {% include 'components/sidebar.html' %} {% endblock sidebar %}
+    
+    <div class="container space-sidebar">
+      {% block content %}{% endblock content %}
+    </div>
+    
     {% block footer %}{% endblock footer %}
 
     <!-- ==== JAVASCRIPT ==== -->
     {% block static_js %}
-    <script src="{% static '/vendor/bootstrap/js/bootstrap.js' %}"></script>
+    <script src="{% static '/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static '/js/script.js' %}"></script>
     {% endblock static_js %}
 
   </body>
