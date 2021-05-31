@@ -41,6 +41,7 @@ DJANGO_APPS = [
 
 CAEIRUS_APPS = [
     'audit',
+    'crispy_forms',
 ]
 
 

@@ -1,9 +1,8 @@
 {% extends "base_site.html" %} 
 
-{% block navbar %} {% endblock %}
 {% block content %}
 
-
+{% comment %} 
 <div class="center">
     <h1 class="title_form">Inscription</h1>
 
@@ -32,7 +31,28 @@
         
     </form>
     {{form.errors}}
+</div> {% endcomment %}
+
+<div class="row d-flex align-items-center justify-content-center">
+    <div class="col col-md-5">
+        <form method="post">
+        {% csrf_token %} {{form.errors}}
+        
+        {% for input in form %}
+        <div class="mb-3">
+            <label class="form-label">{{input.label}}</label>
+            {{input}}
+        </div>
+        {% endfor %}
+        <div class="">
+          <button type="submit" class="btn btn-success btn-lg">Incription</button>
+          <a href="{% url 'audit:login'%}">Vous avez déjâ un compte</a>
+        </div>
+      </form>
+
+    </div>
 </div>
+
 
 
 
