@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+from datetime import datetime
+
 # Create your models here.
 
 
@@ -11,12 +13,23 @@ class Audit(models.Model):
     readers = models.ForeignKey(User, on_delete=models.CASCADE, related_name="relecteur")
 
     create_by = models.DateTimeField(auto_now_add=True)
-    update_by = models.DateTimeField(auto_now_add=True)
+    update_by = models.DateTimeField(auto_created=True)
 
 
-    def get_absolute_url(self):
+    # def save(self, *args, **kwargs):
+    #     self.update_by = datetime.time
+    #     super().save(*args, **kwargs)
+
+
+
+    def get_detail_url(self):
         return reverse('audit:detail-audit', kwargs={'pk': self.pk})
+    
+    def get_update_url(self):
+        return reverse('audit:update-audit', kwargs={'pk': self.pk})
 
+    def get_delete_url(self):
+        return reverse('audit:delete-audit', kwargs={'pk': self.pk})
 
     def __str__(self):
         return '%s ' % (self.name)

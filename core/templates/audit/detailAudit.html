@@ -2,13 +2,42 @@
 
 {% block content %}
 
-<h1>{{title}}</h1>
+<h2>Écrie par {{audit.author}}</h2>
 
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form }}
-    {{ exploitFormSet }}
-    <input type="submit" value="Submit">
-</form>
+<p> Modifier le {{audit.update_by}} </p>
+
+{% if exploits %}
+
+<table>
+    <thead>
+        <th>
+            Description
+        </th>
+        <th>
+            Images
+        </th>
+        <th>
+            Niveau criticiter
+        </th>
+    </thead>
+    {% for exploit in exploits %}
+    <tbody>
+        <td>
+            {{exploit.description}}
+        </td>
+        <td>
+            <img src="{{exploit.image.url}}" alt="{{exploit.image}}">
+        </td>
+        <td>
+            {{exploit.level_critical}}
+        </td>
+    </tbody>
+    {% endfor %}
+</table>
+
+{% endif %}
+
+<p> Crée le {{audit.create_by}} </p>
+<p> Dernière modification {{audit.update_by}} </p>
 
 {% endblock content %}

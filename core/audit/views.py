@@ -1,23 +1,23 @@
 
-from django.forms.models import modelformset_factory
-from django.views.generic import TemplateView,ListView, DetailView, CreateView
+from django.views.generic import TemplateView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import RedirectView
-from django.contrib.auth.models import User
 from django.urls import reverse_lazy
+from django.db import transaction
 
-
-from .forms import AddNewUserForm, AuditForm, ExploitForm
+from .forms import AddNewUserForm, AuditForm, ExploitFormSet
 from .models import Audit, Exploit
 
 
 class HomeView(TemplateView):
 
     template_name = "audit/dashboard.html"
-    title = 'Générateur D\'audit'
+    title = 'Dashboard'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        audit = Audit.objects.filter(author = self.request.user)
         context['title'] = self.title
+        context['audits'] = audit
         return context
 
 
@@ -47,46 +47,88 @@ class RegisterUserView(TemplateView):
 
 class AddAuditView(CreateView):
     model = Audit
+    title = 'Ajout d\'un audit '
     template_name = 'audit/addAudit.html'
-    success_url = '/add-audit/'
     form_class = AuditForm
 
-    ExploitFormSet = modelformset_factory(Exploit, form=ExploitForm, extra=3)
-    exploit_form_set_class = ExploitFormSet()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+    
+        # Récuperation des donnés passer dans le post
+        if self.request.POST:
+            context['exploits'] = ExploitFormSet(self.request.POST)
+        else:
+            context['exploits'] = ExploitFormSet()
+
+        context['title'] = self.title
+        return context
 
     def form_valid(self, form):
-        form.instance.author = self.request.user
+        context = self.get_context_data()
+        exploits = context['exploits']
+        with transaction.atomic(): 
+            form.instance.author = self.request.user
+            self.object = form.save()
+            if exploits.is_valid():
+                exploits.instance.audit = self.object
+                exploits.save()
         return super().form_valid(form)
 
-    def post(self,request):
-        if self.form_valid:
-            exploits = self.ExploitFormSet(request.POST)
-            for exploit in exploits:
-                exploit.instance.audit = self.model
-                if exploit.is_valid():
-                    exploit.save()
 
+    def get_success_url(self):
+        return reverse_lazy('audit:detail-audit', kwargs={'pk': self.object.pk})
+
+class UpdateAuditView(UpdateView):
+    
+    model = Audit
+    template_name = 'audit/updateAudit.html'
+    form_class = AuditForm
 
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['exploit_form_set'] = self.exploit_form_set_class
+    
+        # Récuperation des donnés passer dans le post
+        if self.request.POST:
+            context['exploits'] = ExploitFormSet(self.request.POST, instance=self.object)
+        else:
+            context['exploits'] = ExploitFormSet(instance=self.object)
+
+        context['title'] = self.object.name
         return context
 
-class AuditListView(ListView):
-    model = Audit
-    template_name = 'audit/audit_list.html'
-    context_object_name = 'audits'
+    
+    def form_valid(self, form):
+        context = self.get_context_data()
+        exploits = context['exploits']
+        with transaction.atomic(): 
+            form.instance.author = self.request.user
+            self.object = form.save()
+            if exploits.is_valid():
+                exploits.instance.audit = self.object
+                exploits.save()
+        return super().form_valid(form)
 
-class AuditDetailView(DetailView):
+
+    def get_success_url(self):
+        return reverse_lazy('audit:detail-audit', kwargs={'pk': self.object.pk})
+
+
+class DetailAuditView(DetailView):
 
     model = Audit
-    template_name = 'audit/audit_detail.html'
+    template_name = 'audit/detailAudit.html'
     context_object_name = 'audit'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        exploits = Exploit.objects.filter(audit=self.kwargs.get('pk'))
-        context['exploits'] = exploits
+        context['exploits'] = Exploit.objects.filter(audit=self.kwargs.get('pk'))
+        context['title'] = self.object.name
         return context
 
+
+class DeleteAuditView(DeleteView):
+
+    model = Audit
+    success_url = reverse_lazy('audit:home');
+    template_name = 'audit/deleteAudit.html'

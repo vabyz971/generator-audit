@@ -4,12 +4,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="shortcut icon"type="image/png"href="{% static '/image/fvicon.png' %}"/>
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- ==== CSS ==== -->
     {% block static_css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="{% static '/vendor/bootstrap/css/bootstrap.css' %}"/>
     <link rel="stylesheet" href="{% static '/css/style.css' %}"/>
     {% endblock static_css %}
@@ -18,19 +19,30 @@
   </head>
   <body>
 
+  <div class="d-flex" id="wrapper">
+
     {% block sidebar %} {% include 'components/sidebar.html' %} {% endblock sidebar %}
-    
-    <div class="container space-sidebar">
-      {% block content %}{% endblock content %}
+
+    <div id="page-content-wrapper">
+
+      {% block navbar %} {% include 'components/navbar.html' %} {% endblock navbar %}
+
+      <div class="container-fluid px-4">
+        {% block content %}{% endblock content %}
+      </div>
+
     </div>
+
+  </div>
     
     {% block footer %}{% endblock footer %}
 
+
     <!-- ==== JAVASCRIPT ==== -->
     {% block static_js %}
+    <script src="{% static '/js/script.js' %}"></script>
     <script src="{% static '/vendor/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static '/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static '/js/script.js' %}"></script>
     {% endblock static_js %}
 
   </body>

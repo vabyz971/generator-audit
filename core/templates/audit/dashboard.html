@@ -1,9 +1,56 @@
-{% extends "base_site.html" %} 
+{% extends "base_site.html" %}
 
 {% block content %}
 
-<h1>{{title}}</h1>
-{% lorem 1 b random %}
 
+<div class="row g-3 my-2">
+    <div class="col-md-2">
+        <div class="p-2 bg-white shadow-sm d-flex justify-content-around align-items-center rounded">
+            <div>
+                <p class="fs-5 mb-1">Nombre d'Audit</p>
+                <h3 class="fs-2 m-0 ">{{audits.count}}</h3>
+            </div>
+            <i class="fa fa-file-alt fs-1 primary-text secondary-bg p-2 "></i>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 my-2">
+    <div class="col">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Autheur</th>
+                    <th scope="col">Relecteur</th>
+                    <th scope="col">Publier le</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for audit in audits %}
+                <tr>
+                    <th scope="row">{{ audit.id}} </th>
+                    <td><a href="{{ audit.get_detail_url }}">{{ audit.name}}</a></td>
+                    <td>{{ audit.author}}</td>
+                    <td>{{ audit.readers}}</td>
+                    <td>{{ audit.create_by}}</td>
+                    <td>
+                        <div class="input-group">
+                            <a href="{{ audit.get_update_url }}" class="btn btn-primary">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a href="{{ audit.get_delete_url }}" class="btn btn-danger">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 {% endblock content %}
