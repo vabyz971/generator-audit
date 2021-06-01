@@ -25,24 +25,19 @@ class LoginUserView(TemplateView):
     template_name = "audit/login.html"
 
 
-class RegisterUserView(TemplateView):
+class RegisterUserView(CreateView):
 
-    template_name = "audit/register.html"
-    form = AddNewUserForm
     title = 'Inscription'
-
-    def post(self, request):
-        if request.method == 'POST':
-            form = AddNewUserForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return RedirectView("audit:login")
+    template_name = "audit/register.html"
+    form_class = AddNewUserForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = self.form
         context['title'] = self.title
         return context
+
+    def get_success_url(self):
+        return reverse_lazy('audit:login')
 
 
 class AddAuditView(CreateView):
